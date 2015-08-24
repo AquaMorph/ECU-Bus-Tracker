@@ -7,36 +7,25 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class HandleXML {
+public class RouteList {
+	private String TAG = "RouteList";
 
-	private String TAG = "HandleXML";
-
-	private String routeTitle = "routeTitle";
-	private String routeTag = "routeTag";
-	private String stopTitle = "stopTitle";
-	private String stopTag = "stopTag";
+	private String tag = "tag";
+	private String title = "title";
 	private String urlString = null;
 	private XmlPullParserFactory xmlFactoryObject;
 	public volatile boolean parsingComplete = true;
 
-	public HandleXML(String url){
-		this.urlString = MainActivity.URL + "&r=" + url + "&s=bell";
+	public RouteList(String url){
+		this.urlString = url;
 	}
 
-	public String getRouteTag(){
-		return routeTag;
+	public String getTag(){
+		return tag;
 	}
 
-	public String getRouteTitle(){
-		return routeTitle;
-	}
-
-	public String getStopTitle(){
-		return stopTitle;
-	}
-
-	public String getStopTag(){
-		return stopTag;
+	public String getTitle(){
+		return title;
 	}
 
 	public void parseXMLAndStoreIt(XmlPullParser myParser) {
@@ -51,11 +40,9 @@ public class HandleXML {
 
 				switch (event){
 					case XmlPullParser.START_TAG:
-						if(name.equals("predictions")) {
-							routeTag = myParser.getAttributeValue(null,"routeTag");
-							routeTitle = myParser.getAttributeValue(null,"routeTitle");
-							stopTitle = myParser.getAttributeValue(null,"stopTitle");
-							stopTag = myParser.getAttributeValue(null,"stopTag");
+						if(name.equals("route")) {
+							tag = myParser.getAttributeValue(null,"tag");
+							title = myParser.getAttributeValue(null,"title");
 						}
 						break;
 

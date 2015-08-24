@@ -2,7 +2,6 @@ package com.aquamorph.ecubustracker;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,8 +12,7 @@ public class MainActivity extends AppCompatActivity {
 
 	EditText ed1,ed2,ed3,ed4,ed5;
 
-	private String url1 = "http://webservices.nextbus.com/service/publicXMLFeed?command=predictions&a=ecu&r=";
-	private String url2 = "&s=bell";
+	public static String URL = "http://webservices.nextbus.com/service/publicXMLFeed?command=predictions&a=ecu";
 	private HandleXML obj;
 	Button b1;
 
@@ -32,15 +30,13 @@ public class MainActivity extends AppCompatActivity {
 		b1.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				String url = ed1.getText().toString();
-				String finalUrl = url1 + url + url2;
-				Log.i("Parse ULR", finalUrl);
-				ed2.setText(finalUrl);
+				String route = ed1.getText().toString();
+				ed2.setText(route);
 
-				obj = new HandleXML(finalUrl);
+				obj = new HandleXML(route);
 				obj.fetchXML();
 
-				while (obj.parsingComplete) ;
+				while (obj.parsingComplete);
 				ed2.setText(obj.getRouteTag());
 				ed3.setText(obj.getRouteTitle());
 				ed4.setText(obj.getStopTitle());
