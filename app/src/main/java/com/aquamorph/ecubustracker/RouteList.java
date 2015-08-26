@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class RouteList {
 	private String TAG = "RouteList";
@@ -20,6 +21,7 @@ public class RouteList {
 	public volatile boolean parsingComplete = true;
 	private ArrayList<String> routes = new ArrayList<>();
 	private ArrayList<String> titles = new ArrayList<>();
+	private HashMap<String, String> routeInfo = new HashMap<>();
 
 	public RouteList() {
 		this.urlString = MainActivity.URL + "?command=routeList&a=ecu";
@@ -32,6 +34,10 @@ public class RouteList {
 
 	public ArrayList<String> getTitles() {
 		return titles;
+	}
+
+	public HashMap<String, String> getRouteInfo() {
+		return routeInfo;
 	}
 
 	public void parseXMLAndStoreIt(XmlPullParser myParser) {
@@ -51,6 +57,7 @@ public class RouteList {
 							title = myParser.getAttributeValue(null, "title");
 							routes.add(tag);
 							titles.add(title);
+							routeInfo.put(tag, title);
 //							Log.i(TAG, "Tag: " + tag);
 //							Log.i(TAG, "Title: " + title);
 						}

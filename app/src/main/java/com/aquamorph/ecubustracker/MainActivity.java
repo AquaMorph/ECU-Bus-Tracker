@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.Map;
+
 public class MainActivity extends AppCompatActivity {
 
 	EditText ed1, ed2, ed3, ed4, ed5;
@@ -48,16 +50,17 @@ public class MainActivity extends AppCompatActivity {
 				obj2 = new RouteList();
 				obj2.fetchXML();
 
+				//Lists all info about a stop
 				while (obj.parsingComplete) ;
 				ed2.setText(obj.getRouteTag());
 				ed3.setText(obj.getRouteTitle());
 				ed4.setText(obj.getStopTitle());
 				ed5.setText(obj.getStopTag());
 
+				//Lists all routes
 				while (obj2.parsingComplete) ;
-				for (int i = 0; i < obj2.getRoutes().size(); i++) {
-					tv1.setText(tv1.getText() + " " + obj2.getRoutes().get(i) + " " + obj2.getTitles().get(i));
-					Log.i(TAG, obj2.getRoutes().get(i));
+				for (Map.Entry<String, String> entry : obj2.getRouteInfo().entrySet()) {
+					tv1.setText(tv1.getText() + " " + entry.getKey() + " " + entry.getValue());
 				}
 			}
 		});
