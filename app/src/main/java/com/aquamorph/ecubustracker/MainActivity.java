@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
 				while (obj2.parsingComplete) ;
 				for (int i = 0; i < obj2.getRoutes().size(); i++) {
-					tv1.setText(tv1.getText() + " " + obj2.getRoutes().get(i));
+					tv1.setText(tv1.getText() + " " + obj2.getRoutes().get(i) + " " + obj2.getTitles().get(i));
 					Log.i(TAG, obj2.getRoutes().get(i));
 				}
 			}

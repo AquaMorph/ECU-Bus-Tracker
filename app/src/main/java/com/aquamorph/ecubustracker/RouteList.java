@@ -19,6 +19,7 @@ public class RouteList {
 	private XmlPullParserFactory xmlFactoryObject;
 	public volatile boolean parsingComplete = true;
 	private ArrayList<String> routes = new ArrayList<>();
+	private ArrayList<String> titles = new ArrayList<>();
 
 	public RouteList() {
 		this.urlString = MainActivity.URL + "?command=routeList&a=ecu";
@@ -29,12 +30,8 @@ public class RouteList {
 		return routes;
 	}
 
-	public String getTag() {
-		return tag;
-	}
-
-	public String getTitle() {
-		return title;
+	public ArrayList<String> getTitles() {
+		return titles;
 	}
 
 	public void parseXMLAndStoreIt(XmlPullParser myParser) {
@@ -53,7 +50,7 @@ public class RouteList {
 							tag = myParser.getAttributeValue(null, "tag");
 							title = myParser.getAttributeValue(null, "title");
 							routes.add(tag);
-//							routes[1][numberRoutes] = title;
+							titles.add(title);
 //							Log.i(TAG, "Tag: " + tag);
 //							Log.i(TAG, "Title: " + title);
 						}
