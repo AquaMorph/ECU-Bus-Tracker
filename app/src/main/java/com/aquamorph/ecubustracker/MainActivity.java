@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
 	public static String URL = "http://webservices.nextbus.com/service/publicXMLFeed";
 	private HandleXML obj;
 	private RouteList obj2;
+	private StopInfo obj3;
 	Button b1;
 	TextView tv1;
 
@@ -50,6 +51,9 @@ public class MainActivity extends AppCompatActivity {
 				obj2 = new RouteList();
 				obj2.fetchXML();
 
+				obj3 = new StopInfo(route);
+				obj3.fetchXML();
+
 				//Lists all info about a stop
 				while (obj.parsingComplete) ;
 				ed2.setText(obj.getRouteTag());
@@ -60,6 +64,12 @@ public class MainActivity extends AppCompatActivity {
 				//Lists all routes
 				while (obj2.parsingComplete) ;
 				for (Map.Entry<String, String> entry : obj2.getRouteInfo().entrySet()) {
+//					tv1.setText(tv1.getText() + " " + entry.getKey() + " " + entry.getValue());
+				}
+
+				//Lists all stops
+				while (obj3.parsingComplete) ;
+				for (Map.Entry<String, String> entry : obj3.getStopInfo().entrySet()) {
 					tv1.setText(tv1.getText() + " " + entry.getKey() + " " + entry.getValue());
 				}
 			}
