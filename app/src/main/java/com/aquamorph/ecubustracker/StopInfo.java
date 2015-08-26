@@ -60,7 +60,7 @@ public class StopInfo {
 								titles.add(title);
 								stopInfo.put(tag, title);
 //							    Log.i(TAG, "Tag: " + tag);
-								Log.i(TAG, "Title: " + title);
+//								Log.i(TAG, "Title: " + title);
 							}
 						}
 						break;

@@ -61,6 +61,10 @@ public class MainActivity extends AppCompatActivity {
 				ed4.setText(obj.getStopTitle());
 				ed5.setText(obj.getStopTag());
 
+				for(int i = 0; i < obj.getPredictions().size(); i++) {
+					tv1.setText(tv1.getText() + " " + obj.getPredictions().get(i).getSeconds());
+				}
+
 				//Lists all routes
 				while (obj2.parsingComplete) ;
 				for (Map.Entry<String, String> entry : obj2.getRouteInfo().entrySet()) {

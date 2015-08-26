@@ -1,11 +1,14 @@
 package com.aquamorph.ecubustracker;
 
+import android.util.Log;
+
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
 public class HandleXML {
 
@@ -17,31 +20,36 @@ public class HandleXML {
 	private String stopTag = "stopTag";
 	private String urlString = null;
 	private XmlPullParserFactory xmlFactoryObject;
+	private ArrayList<Predictions> predictions = new ArrayList<>();
 	public volatile boolean parsingComplete = true;
 
-	public HandleXML(String url){
-		this.urlString = MainActivity.URL + "?command=predictions&a=ecu&r=" + url + "&s=bell";
+	public HandleXML(String route) {
+		this.urlString = MainActivity.URL + "?command=predictions&a=ecu&r=" + route + "&s=bell";
 	}
 
-	public String getRouteTag(){
+	public String getRouteTag() {
 		return routeTag;
 	}
 
-	public String getRouteTitle(){
+	public String getRouteTitle() {
 		return routeTitle;
 	}
 
-	public String getStopTitle(){
+	public String getStopTitle() {
 		return stopTitle;
 	}
 
-	public String getStopTag(){
+	public String getStopTag() {
 		return stopTag;
+	}
+
+	public ArrayList<Predictions> getPredictions() {
+		return predictions;
 	}
 
 	public void parseXMLAndStoreIt(XmlPullParser myParser) {
 		int event;
-		String text=null;
+		String text = null;
 
 		try {
 			event = myParser.getEventType();
@@ -49,13 +57,17 @@ public class HandleXML {
 			while (event != XmlPullParser.END_DOCUMENT) {
 				String name = myParser.getName();
 
-				switch (event){
+				switch (event) {
 					case XmlPullParser.START_TAG:
-						if(name.equals("predictions")) {
-							routeTag = myParser.getAttributeValue(null,"routeTag");
-							routeTitle = myParser.getAttributeValue(null,"routeTitle");
-							stopTitle = myParser.getAttributeValue(null,"stopTitle");
-							stopTag = myParser.getAttributeValue(null,"stopTag");
+						if (name.equals("predictions")) {
+							routeTag = myParser.getAttributeValue(null, "routeTag");
+							routeTitle = myParser.getAttributeValue(null, "routeTitle");
+							stopTitle = myParser.getAttributeValue(null, "stopTitle");
+							stopTag = myParser.getAttributeValue(null, "stopTag");
+						}
+						if (name.equals("prediction")) {
+							Log.i(TAG, myParser.getAttributeValue(null, "seconds"));
+							predictions.add(new Predictions(Integer.parseInt(myParser.getAttributeValue(null, "seconds"))));
 						}
 						break;
 
@@ -69,20 +81,18 @@ public class HandleXML {
 				event = myParser.next();
 			}
 			parsingComplete = false;
-		}
-
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void fetchXML(){
-		Thread thread = new Thread(new Runnable(){
+	public void fetchXML() {
+		Thread thread = new Thread(new Runnable() {
 			@Override
 			public void run() {
 				try {
 					URL url = new URL(urlString);
-					HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+					HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
 					conn.setReadTimeout(10000 /* milliseconds */);
 					conn.setConnectTimeout(15000 /* milliseconds */);
@@ -99,8 +109,7 @@ public class HandleXML {
 
 					parseXMLAndStoreIt(myparser);
 					stream.close();
-				}
-				catch (Exception e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
