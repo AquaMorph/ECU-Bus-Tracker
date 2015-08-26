@@ -20,7 +20,7 @@ public class HandleXML {
 	public volatile boolean parsingComplete = true;
 
 	public HandleXML(String url){
-		this.urlString = MainActivity.URL + "&r=" + url + "&s=bell";
+		this.urlString = MainActivity.URL + "?command=predictions&a=ecu&r=" + url + "&s=bell";
 	}
 
 	public String getRouteTag(){

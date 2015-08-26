@@ -1,11 +1,14 @@
 package com.aquamorph.ecubustracker;
 
+import android.util.Log;
+
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
 public class RouteList {
 	private String TAG = "RouteList";
@@ -15,22 +18,28 @@ public class RouteList {
 	private String urlString = null;
 	private XmlPullParserFactory xmlFactoryObject;
 	public volatile boolean parsingComplete = true;
+	private ArrayList<String> routes = new ArrayList<>();
 
-	public RouteList(String url){
-		this.urlString = url;
+	public RouteList() {
+		this.urlString = MainActivity.URL + "?command=routeList&a=ecu";
+		Log.i(TAG, "URL: " + urlString);
 	}
 
-	public String getTag(){
+	public ArrayList<String> getRoutes() {
+		return routes;
+	}
+
+	public String getTag() {
 		return tag;
 	}
 
-	public String getTitle(){
+	public String getTitle() {
 		return title;
 	}
 
 	public void parseXMLAndStoreIt(XmlPullParser myParser) {
 		int event;
-		String text=null;
+		String text = null;
 
 		try {
 			event = myParser.getEventType();
@@ -38,11 +47,15 @@ public class RouteList {
 			while (event != XmlPullParser.END_DOCUMENT) {
 				String name = myParser.getName();
 
-				switch (event){
+				switch (event) {
 					case XmlPullParser.START_TAG:
-						if(name.equals("route")) {
-							tag = myParser.getAttributeValue(null,"tag");
-							title = myParser.getAttributeValue(null,"title");
+						if (name.equals("route")) {
+							tag = myParser.getAttributeValue(null, "tag");
+							title = myParser.getAttributeValue(null, "title");
+							routes.add(tag);
+//							routes[1][numberRoutes] = title;
+//							Log.i(TAG, "Tag: " + tag);
+//							Log.i(TAG, "Title: " + title);
 						}
 						break;
 
@@ -56,20 +69,18 @@ public class RouteList {
 				event = myParser.next();
 			}
 			parsingComplete = false;
-		}
-
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void fetchXML(){
-		Thread thread = new Thread(new Runnable(){
+	public void fetchXML() {
+		Thread thread = new Thread(new Runnable() {
 			@Override
 			public void run() {
 				try {
 					URL url = new URL(urlString);
-					HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+					HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
 					conn.setReadTimeout(10000 /* milliseconds */);
 					conn.setConnectTimeout(15000 /* milliseconds */);
@@ -86,12 +97,13 @@ public class RouteList {
 
 					parseXMLAndStoreIt(myparser);
 					stream.close();
-				}
-				catch (Exception e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
 		thread.start();
 	}
+
+
 }
