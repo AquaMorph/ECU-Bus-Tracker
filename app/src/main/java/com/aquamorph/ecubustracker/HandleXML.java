@@ -2,6 +2,8 @@ package com.aquamorph.ecubustracker;
 
 import android.util.Log;
 
+import com.aquamorph.ecubustracker.Models.Predictions;
+
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
