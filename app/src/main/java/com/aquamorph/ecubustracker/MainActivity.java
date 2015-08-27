@@ -60,9 +60,10 @@ public class MainActivity extends AppCompatActivity {
 				ed3.setText(obj.getRouteTitle());
 				ed4.setText(obj.getStopTitle());
 				ed5.setText(obj.getStopTag());
+				tv1.setText("");
 
 				for(int i = 0; i < obj.getPredictions().size(); i++) {
-					tv1.setText(tv1.getText() + " " + obj.getPredictions().get(i).getSeconds());
+					tv1.setText(tv1.getText() + " " + obj.getPredictions().get(i).getSeconds() + " " + obj.getPredictions().get(i).getMinutes());
 				}
 
 				//Lists all routes

@@ -69,7 +69,14 @@ public class HandleXML {
 						}
 						if (name.equals("prediction")) {
 							Log.i(TAG, myParser.getAttributeValue(null, "seconds"));
-							predictions.add(new Predictions(Integer.parseInt(myParser.getAttributeValue(null, "seconds"))));
+							predictions.add(new Predictions(Integer.parseInt(myParser.getAttributeValue(null, "seconds")),
+									Integer.parseInt(myParser.getAttributeValue(null, "minutes")),
+									Boolean.parseBoolean(myParser.getAttributeValue(null, "isDeparture")),
+									Boolean.parseBoolean(myParser.getAttributeValue(null, "affectedByLayover")),
+									myParser.getAttributeValue(null, "dirTag"),
+									Integer.parseInt(myParser.getAttributeValue(null, "vehicle")),
+									Integer.parseInt(myParser.getAttributeValue(null, "block"))
+											));
 						}
 						break;
 

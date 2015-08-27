@@ -9,7 +9,7 @@ public class Predictions {
 	public int vehicle;
 	public int block;
 
-	Predictions(int seconds, int minutes, Boolean isDeparture, Boolean affectedByLayover,
+	public Predictions(int seconds, int minutes, Boolean isDeparture, Boolean affectedByLayover,
 	            String dirTag, int vehicle, int block) {
 		this.seconds = seconds;
 		this.minutes = minutes;
