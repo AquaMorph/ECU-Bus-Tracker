@@ -1,10 +1,10 @@
 package com.aquamorph.ecubustracker;
 
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
 	private StopInfo obj3;
 	private RecyclerView recyclerView;
 	private PredictionAdapter adapter;
+	private SwipeRefreshLayout mSwipeRefreshLayout;
 	ArrayList<Predictions> test = new ArrayList<>();
 	Button b1;
 
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		b1 = (Button) findViewById(R.id.button);
+		mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
 
 		recyclerView = (RecyclerView) findViewById(R.id.rv);
 		adapter = new PredictionAdapter(getApplicationContext(), test);
@@ -48,48 +50,15 @@ public class MainActivity extends AppCompatActivity {
 		b1.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Log.i(TAG, "Button Pressed");
-				String route = ed1.getText().toString();
-//				ed2.setText(route);
+				refresh();
+			}
+		});
 
-				obj = new HandleXML(route);
-				obj.fetchXML();
-
-				obj2 = new RouteList();
-				obj2.fetchXML();
-
-				obj3 = new StopInfo(route);
-				obj3.fetchXML();
-
-				//Lists all info about a stop
-				while (obj.parsingComplete) ;
-//				ed2.setText(obj.getRouteTag());
-//				ed3.setText(obj.getRouteTitle());
-//				ed4.setText(obj.getStopTitle());
-//				ed5.setText(obj.getStopTag());
-//				tv1.setText("");
-
-				for (int i = 0; i < obj.getPredictions().size(); i++) {
-//					tv1.setText(tv1.getText() + " " + obj.getPredictions().get(i).getSeconds() + " " + obj.getPredictions().get(i).getMinutes());
-				}
-
-				//Lists all routes
-//				while (obj2.parsingComplete) ;
-//				for(int i = 0; i < obj2.getRoutes().size(); i++) {
-//					tv1.setText(tv1.getText() + " " + obj2.getRoutes().get(i).getTitle() + " " + obj2.getRoutes().get(i).getTag());
-//				}
-
-				//Lists all stops
-				while (obj3.parsingComplete) ;
-				for (int i = 0; i < obj3.getStops().size(); i++) {
-//					tv1.setText(tv1.getText() + " " + obj3.getStops().get(i).getTitle() + " " + obj3.getStops().get(i).getStopId());
-				}
-				test.clear();
-				test.addAll(obj.getPredictions());
-
-				adapter.notifyDataSetChanged();
-
-
+		mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+			@Override
+			public void onRefresh() {
+				// Refresh items
+				refresh();
 			}
 		});
 	}
@@ -116,4 +85,47 @@ public class MainActivity extends AppCompatActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
+	public void refresh() {
+		String route = ed1.getText().toString();
+//				ed2.setText(route);
+
+		obj = new HandleXML(route);
+		obj.fetchXML();
+
+		obj2 = new RouteList();
+		obj2.fetchXML();
+
+		obj3 = new StopInfo(route);
+		obj3.fetchXML();
+
+		//Lists all info about a stop
+		while (obj.parsingComplete) ;
+//				ed2.setText(obj.getRouteTag());
+//				ed3.setText(obj.getRouteTitle());
+//				ed4.setText(obj.getStopTitle());
+//				ed5.setText(obj.getStopTag());
+//				tv1.setText("");
+
+		for (int i = 0; i < obj.getPredictions().size(); i++) {
+//					tv1.setText(tv1.getText() + " " + obj.getPredictions().get(i).getSeconds() + " " + obj.getPredictions().get(i).getMinutes());
+		}
+
+		//Lists all routes
+//				while (obj2.parsingComplete) ;
+//				for(int i = 0; i < obj2.getRoutes().size(); i++) {
+//					tv1.setText(tv1.getText() + " " + obj2.getRoutes().get(i).getTitle() + " " + obj2.getRoutes().get(i).getTag());
+//				}
+
+		//Lists all stops
+		while (obj3.parsingComplete) ;
+		for (int i = 0; i < obj3.getStops().size(); i++) {
+//					tv1.setText(tv1.getText() + " " + obj3.getStops().get(i).getTitle() + " " + obj3.getStops().get(i).getStopId());
+		}
+		test.clear();
+		test.addAll(obj.getPredictions());
+
+		adapter.notifyDataSetChanged();
+		mSwipeRefreshLayout.setRefreshing(false);
+
+	}
 }
