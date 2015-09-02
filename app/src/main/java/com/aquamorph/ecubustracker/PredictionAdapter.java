@@ -1,6 +1,8 @@
 package com.aquamorph.ecubustracker;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.aquamorph.ecubustracker.Models.Predictions;
+import com.telly.mrvector.MrVector;
 
 import java.util.ArrayList;
 
@@ -20,24 +23,35 @@ public class PredictionAdapter extends RecyclerView.Adapter<PredictionAdapter.My
 	private String TAG = "PredictionAdapter";
 	private ArrayList<Predictions> data;
 	private LayoutInflater inflater;
+	private Context context;
+
 
 	public PredictionAdapter(Context context,ArrayList<Predictions> data) {
 		inflater = from(context);
 		Log.i(TAG, "Running Adaoter");
 		this.data = data;
+		this.context = context;
 	}
 
 	@Override
 	public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 		View view = inflater.inflate(R.layout.busestimate, parent, false);
 		MyViewHolder holder = new MyViewHolder(view);
+
 		return holder;
 	}
 
 	@Override
 	public void onBindViewHolder(MyViewHolder holder, int position) {
 		Predictions current = data.get(position);
-		holder.seconds.setText(Integer.toString(current.getMinutes()));
+		holder.seconds.setText(Integer.toString(current.getSeconds()));
+		holder.minutes.setText(Integer.toString(current.getMinutes()));
+		Drawable busicon = MrVector.inflate(context.getResources(), R.drawable.vehicle12);
+		if(Build.VERSION.SDK_INT >= 16) {
+			holder.busicon.setBackground(busicon);
+		} else {
+			holder.busicon.setImageDrawable(busicon);
+		}
 	}
 
 	@Override
@@ -48,11 +62,13 @@ public class PredictionAdapter extends RecyclerView.Adapter<PredictionAdapter.My
 	class MyViewHolder extends RecyclerView.ViewHolder {
 
 		protected TextView seconds;
+		protected TextView minutes;
 		protected ImageView busicon;
 
 		public MyViewHolder(View itemView) {
 			super(itemView);
 			seconds = (TextView) itemView.findViewById(R.id.seconds);
+			minutes = (TextView) itemView.findViewById(R.id.minutes);
 			busicon = (ImageView) itemView.findViewById(R.id.imageView);
 		}
 	}

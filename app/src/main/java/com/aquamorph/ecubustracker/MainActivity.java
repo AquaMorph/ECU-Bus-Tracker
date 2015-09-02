@@ -10,7 +10,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.aquamorph.ecubustracker.Models.Predictions;
 
@@ -18,7 +17,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-	EditText ed1, ed2, ed3, ed4, ed5;
+	EditText ed1;
 
 	private String TAG = "MainActivity";
 	public static String URL = "http://webservices.nextbus.com/service/publicXMLFeed";
@@ -29,13 +28,11 @@ public class MainActivity extends AppCompatActivity {
 	private PredictionAdapter adapter;
 	ArrayList<Predictions> test = new ArrayList<>();
 	Button b1;
-	TextView tv1;
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		b1 = (Button) findViewById(R.id.button);
-		tv1 = (TextView) findViewById(R.id.textView);
 
 		recyclerView = (RecyclerView) findViewById(R.id.rv);
 		adapter = new PredictionAdapter(getApplicationContext(), test);
@@ -45,10 +42,6 @@ public class MainActivity extends AppCompatActivity {
 		recyclerView.setLayoutManager(llm);
 
 		ed1 = (EditText) findViewById(R.id.editText);
-		ed2 = (EditText) findViewById(R.id.editText2);
-		ed3 = (EditText) findViewById(R.id.editText3);
-		ed4 = (EditText) findViewById(R.id.editText4);
-		ed5 = (EditText) findViewById(R.id.editText5);
 
 		ed1.setText("508");
 
@@ -57,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
 			public void onClick(View v) {
 				Log.i(TAG, "Button Pressed");
 				String route = ed1.getText().toString();
-				ed2.setText(route);
+//				ed2.setText(route);
 
 				obj = new HandleXML(route);
 				obj.fetchXML();
@@ -70,14 +63,14 @@ public class MainActivity extends AppCompatActivity {
 
 				//Lists all info about a stop
 				while (obj.parsingComplete) ;
-				ed2.setText(obj.getRouteTag());
-				ed3.setText(obj.getRouteTitle());
-				ed4.setText(obj.getStopTitle());
-				ed5.setText(obj.getStopTag());
-				tv1.setText("");
+//				ed2.setText(obj.getRouteTag());
+//				ed3.setText(obj.getRouteTitle());
+//				ed4.setText(obj.getStopTitle());
+//				ed5.setText(obj.getStopTag());
+//				tv1.setText("");
 
 				for (int i = 0; i < obj.getPredictions().size(); i++) {
-					tv1.setText(tv1.getText() + " " + obj.getPredictions().get(i).getSeconds() + " " + obj.getPredictions().get(i).getMinutes());
+//					tv1.setText(tv1.getText() + " " + obj.getPredictions().get(i).getSeconds() + " " + obj.getPredictions().get(i).getMinutes());
 				}
 
 				//Lists all routes
@@ -89,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
 				//Lists all stops
 				while (obj3.parsingComplete) ;
 				for (int i = 0; i < obj3.getStops().size(); i++) {
-					tv1.setText(tv1.getText() + " " + obj3.getStops().get(i).getTitle() + " " + obj3.getStops().get(i).getStopId());
+//					tv1.setText(tv1.getText() + " " + obj3.getStops().get(i).getTitle() + " " + obj3.getStops().get(i).getStopId());
 				}
 				test.clear();
 				test.addAll(obj.getPredictions());
