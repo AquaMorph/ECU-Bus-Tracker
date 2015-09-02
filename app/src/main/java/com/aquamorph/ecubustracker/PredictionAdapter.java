@@ -1,6 +1,7 @@
 package com.aquamorph.ecubustracker;
 
 import android.content.Context;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.v7.widget.RecyclerView;
@@ -47,6 +48,13 @@ public class PredictionAdapter extends RecyclerView.Adapter<PredictionAdapter.My
 		holder.seconds.setText(Integer.toString(current.getSeconds()));
 		holder.minutes.setText(Integer.toString(current.getMinutes()));
 		Drawable busicon = MrVector.inflate(context.getResources(), R.drawable.vehicle12);
+		if(current.getMinutes() <= 5) {
+			busicon.setColorFilter(0xff4CAF50, PorterDuff.Mode.MULTIPLY);
+		} else if(current.getMinutes() <= 10) {
+			busicon.setColorFilter(0xffFFC107, PorterDuff.Mode.MULTIPLY);
+		} else {
+			busicon.setColorFilter(0xffF44336, PorterDuff.Mode.MULTIPLY);
+		}
 		if(Build.VERSION.SDK_INT >= 16) {
 			holder.busicon.setBackground(busicon);
 		} else {
