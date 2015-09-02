@@ -36,8 +36,8 @@ public class PredictionAdapter extends RecyclerView.Adapter<PredictionAdapter.My
 	@Override
 	public void onBindViewHolder(MyViewHolder holder, int position) {
 		Predictions current = data.get(position);
-		holder.seconds.setText(current.getSeconds() + "Test");
-		Log.i(TAG,"Seconds: " + current.getSeconds());
+		holder.seconds.setText(Integer.toString(current.getSeconds()));
+//		Log.i(TAG,"Seconds: " + current.getSeconds());
 	}
 
 	@Override

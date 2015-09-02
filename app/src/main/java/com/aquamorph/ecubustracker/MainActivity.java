@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
 	private StopInfo obj3;
 	private RecyclerView recyclerView;
 	private PredictionAdapter adapter;
+	ArrayList<Predictions> test = new ArrayList<>();
 	Button b1;
 	TextView tv1;
 
@@ -35,15 +36,6 @@ public class MainActivity extends AppCompatActivity {
 		setContentView(R.layout.activity_main);
 		b1 = (Button) findViewById(R.id.button);
 		tv1 = (TextView) findViewById(R.id.textView);
-
-		ArrayList<Predictions> test = new ArrayList<>();
-		test.add(new Predictions(1, 1, true, true, "dirTag", 1, 1));
-		test.add(new Predictions(1, 1, true, true, "dirTag", 1, 1));
-		test.add(new Predictions(1, 1, true, true, "dirTag", 1, 1));
-
-		for(int i = 0; i < test.size(); i++) {
-			Log.i(TAG, "Tag: " + test.get(i).getDirTag());
-		}
 
 		recyclerView = (RecyclerView) findViewById(R.id.rv);
 		adapter = new PredictionAdapter(getApplicationContext(), test);
@@ -99,6 +91,9 @@ public class MainActivity extends AppCompatActivity {
 				for (int i = 0; i < obj3.getStops().size(); i++) {
 					tv1.setText(tv1.getText() + " " + obj3.getStops().get(i).getTitle() + " " + obj3.getStops().get(i).getStopId());
 				}
+				test.addAll(obj.getPredictions());
+
+				adapter.notifyDataSetChanged();
 
 
 			}
