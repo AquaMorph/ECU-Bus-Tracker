@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.aquamorph.ecubustracker.Models.Predictions;
@@ -36,8 +37,7 @@ public class PredictionAdapter extends RecyclerView.Adapter<PredictionAdapter.My
 	@Override
 	public void onBindViewHolder(MyViewHolder holder, int position) {
 		Predictions current = data.get(position);
-		holder.seconds.setText(Integer.toString(current.getSeconds()));
-//		Log.i(TAG,"Seconds: " + current.getSeconds());
+		holder.seconds.setText(Integer.toString(current.getMinutes()));
 	}
 
 	@Override
@@ -48,10 +48,12 @@ public class PredictionAdapter extends RecyclerView.Adapter<PredictionAdapter.My
 	class MyViewHolder extends RecyclerView.ViewHolder {
 
 		protected TextView seconds;
+		protected ImageView busicon;
 
 		public MyViewHolder(View itemView) {
 			super(itemView);
 			seconds = (TextView) itemView.findViewById(R.id.seconds);
+			busicon = (ImageView) itemView.findViewById(R.id.imageView);
 		}
 	}
 }

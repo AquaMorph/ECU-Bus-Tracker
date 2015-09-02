@@ -91,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
 				for (int i = 0; i < obj3.getStops().size(); i++) {
 					tv1.setText(tv1.getText() + " " + obj3.getStops().get(i).getTitle() + " " + obj3.getStops().get(i).getStopId());
 				}
+				test.clear();
 				test.addAll(obj.getPredictions());
 
 				adapter.notifyDataSetChanged();
