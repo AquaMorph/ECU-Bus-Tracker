@@ -2,6 +2,8 @@ package com.aquamorph.ecubustracker;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -10,7 +12,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import java.util.Map;
+import com.aquamorph.ecubustracker.Models.Predictions;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
 	private HandleXML obj;
 	private RouteList obj2;
 	private StopInfo obj3;
+	private RecyclerView recyclerView;
+	private PredictionAdapter adapter;
 	Button b1;
 	TextView tv1;
 
@@ -29,6 +35,22 @@ public class MainActivity extends AppCompatActivity {
 		setContentView(R.layout.activity_main);
 		b1 = (Button) findViewById(R.id.button);
 		tv1 = (TextView) findViewById(R.id.textView);
+
+		ArrayList<Predictions> test = new ArrayList<>();
+		test.add(new Predictions(1, 1, true, true, "dirTag", 1, 1));
+		test.add(new Predictions(1, 1, true, true, "dirTag", 1, 1));
+		test.add(new Predictions(1, 1, true, true, "dirTag", 1, 1));
+
+		for(int i = 0; i < test.size(); i++) {
+			Log.i(TAG, "Tag: " + test.get(i).getDirTag());
+		}
+
+		recyclerView = (RecyclerView) findViewById(R.id.rv);
+		adapter = new PredictionAdapter(getApplicationContext(), test);
+		LinearLayoutManager llm = new LinearLayoutManager(this);
+		llm.setOrientation(LinearLayoutManager.VERTICAL);
+		recyclerView.setAdapter(adapter);
+		recyclerView.setLayoutManager(llm);
 
 		ed1 = (EditText) findViewById(R.id.editText);
 		ed2 = (EditText) findViewById(R.id.editText2);
@@ -62,21 +84,23 @@ public class MainActivity extends AppCompatActivity {
 				ed5.setText(obj.getStopTag());
 				tv1.setText("");
 
-				for(int i = 0; i < obj.getPredictions().size(); i++) {
+				for (int i = 0; i < obj.getPredictions().size(); i++) {
 					tv1.setText(tv1.getText() + " " + obj.getPredictions().get(i).getSeconds() + " " + obj.getPredictions().get(i).getMinutes());
 				}
 
 				//Lists all routes
-				while (obj2.parsingComplete) ;
-				for (Map.Entry<String, String> entry : obj2.getRouteInfo().entrySet()) {
-//					tv1.setText(tv1.getText() + " " + entry.getKey() + " " + entry.getValue());
-				}
+//				while (obj2.parsingComplete) ;
+//				for(int i = 0; i < obj2.getRoutes().size(); i++) {
+//					tv1.setText(tv1.getText() + " " + obj2.getRoutes().get(i).getTitle() + " " + obj2.getRoutes().get(i).getTag());
+//				}
 
 				//Lists all stops
 				while (obj3.parsingComplete) ;
-				for (Map.Entry<String, String> entry : obj3.getStopInfo().entrySet()) {
-					tv1.setText(tv1.getText() + " " + entry.getKey() + " " + entry.getValue());
+				for (int i = 0; i < obj3.getStops().size(); i++) {
+					tv1.setText(tv1.getText() + " " + obj3.getStops().get(i).getTitle() + " " + obj3.getStops().get(i).getStopId());
 				}
+
+
 			}
 		});
 	}
@@ -102,4 +126,5 @@ public class MainActivity extends AppCompatActivity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+
 }

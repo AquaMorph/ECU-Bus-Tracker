@@ -2,6 +2,8 @@ package com.aquamorph.ecubustracker;
 
 import android.util.Log;
 
+import com.aquamorph.ecubustracker.Models.Routes;
+
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
@@ -9,35 +11,22 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class RouteList {
 	private String TAG = "RouteList";
 
-	private String tag = "tag";
-	private String title = "title";
 	private String urlString = null;
 	private XmlPullParserFactory xmlFactoryObject;
 	public volatile boolean parsingComplete = true;
-	private ArrayList<String> routes = new ArrayList<>();
-	private ArrayList<String> titles = new ArrayList<>();
-	private HashMap<String, String> routeInfo = new HashMap<>();
+	private ArrayList<Routes> routes;
 
 	public RouteList() {
 		this.urlString = MainActivity.URL + "?command=routeList&a=ecu";
 		Log.i(TAG, "URL: " + urlString);
 	}
 
-	public ArrayList<String> getRoutes() {
+	public ArrayList<Routes> getRoutes() {
 		return routes;
-	}
-
-	public ArrayList<String> getTitles() {
-		return titles;
-	}
-
-	public HashMap<String, String> getRouteInfo() {
-		return routeInfo;
 	}
 
 	public void parseXMLAndStoreIt(XmlPullParser myParser) {
@@ -53,13 +42,8 @@ public class RouteList {
 				switch (event) {
 					case XmlPullParser.START_TAG:
 						if (name.equals("route")) {
-							tag = myParser.getAttributeValue(null, "tag");
-							title = myParser.getAttributeValue(null, "title");
-							routes.add(tag);
-							titles.add(title);
-							routeInfo.put(tag, title);
-//							Log.i(TAG, "Tag: " + tag);
-//							Log.i(TAG, "Title: " + title);
+							routes.add(new Routes(myParser.getAttributeValue(null, "tag"),
+									myParser.getAttributeValue(null, "title")));
 						}
 						break;
 

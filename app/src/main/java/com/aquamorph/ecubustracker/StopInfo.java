@@ -2,6 +2,8 @@ package com.aquamorph.ecubustracker;
 
 import android.util.Log;
 
+import com.aquamorph.ecubustracker.Models.Stops;
+
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
@@ -9,35 +11,22 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class StopInfo {
 	private String TAG = "StopInfo";
 
-	private String tag = "tag";
-	private String title = "title";
 	private String urlString = null;
 	private XmlPullParserFactory xmlFactoryObject;
 	public volatile boolean parsingComplete = true;
-	private ArrayList<String> stop = new ArrayList<>();
-	private ArrayList<String> titles = new ArrayList<>();
-	private HashMap<String, String> stopInfo = new HashMap<>();
+	private ArrayList<Stops> stops = new ArrayList<>();
 
 	public StopInfo(String stop) {
 		this.urlString = MainActivity.URL + "?command=routeConfig&a=ecu&r=" + stop;
 		Log.i(TAG, "URL: " + urlString);
 	}
 
-	public ArrayList<String> getStop() {
-		return stop;
-	}
-
-	public ArrayList<String> getTitles() {
-		return titles;
-	}
-
-	public HashMap<String, String> getStopInfo() {
-		return stopInfo;
+	public ArrayList<Stops> getStops() {
+		return stops;
 	}
 
 	public void parseXMLAndStoreIt(XmlPullParser myParser) {
@@ -54,13 +43,11 @@ public class StopInfo {
 					case XmlPullParser.START_TAG:
 						if (name.equals("stop")) {
 							if (myParser.getAttributeValue(null, "title") != null) {
-								tag = myParser.getAttributeValue(null, "tag");
-								title = myParser.getAttributeValue(null, "title");
-								stop.add(tag);
-								titles.add(title);
-								stopInfo.put(tag, title);
-//							    Log.i(TAG, "Tag: " + tag);
-//								Log.i(TAG, "Title: " + title);
+								stops.add(new Stops(myParser.getAttributeValue(null, "title"),
+										myParser.getAttributeValue(null, "tag"),
+										Double.parseDouble(myParser.getAttributeValue(null, "lat")),
+										Double.parseDouble(myParser.getAttributeValue(null, "lon")),
+										myParser.getAttributeValue(null, "stopId")));
 							}
 						}
 						break;
@@ -110,7 +97,5 @@ public class StopInfo {
 		});
 		thread.start();
 	}
-
-
 }
 

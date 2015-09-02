@@ -1,15 +1,15 @@
 package com.aquamorph.ecubustracker.Models;
 
 public class Routes {
-	private int tag;
+	private String tag;
 	private String title;
 
-	public Routes(int tag,String title) {
+	public Routes(String tag,String title) {
 		this.tag = tag;
 		this.title = title;
 	}
 
-	public int getTag() {
+	public String getTag() {
 		return tag;
 	}
 
