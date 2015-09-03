@@ -29,7 +29,6 @@ public class MainActivity extends AppCompatActivity {
 	private RecyclerView recyclerView;
 	private PredictionAdapter adapter;
 	private SwipeRefreshLayout mSwipeRefreshLayout;
-	private boolean isRefreshing = false;
 	ArrayList<Predictions> test = new ArrayList<>();
 	Button b1;
 
@@ -96,56 +95,11 @@ public class MainActivity extends AppCompatActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	public void refresh() {
-		isRefreshing = true;
-		String route = ed1.getText().toString();
-//				ed2.setText(route);
-
-		obj = new HandleXML(route);
-		obj.fetchXML();
-
-		obj2 = new RouteList();
-		obj2.fetchXML();
-
-		obj3 = new StopInfo(route);
-		obj3.fetchXML();
-
-		//Lists all info about a stop
-		while (obj.parsingComplete) ;
-//				ed2.setText(obj.getRouteTag());
-//				ed3.setText(obj.getRouteTitle());
-//				ed4.setText(obj.getStopTitle());
-//				ed5.setText(obj.getStopTag());
-//				tv1.setText("");
-
-		for (int i = 0; i < obj.getPredictions().size(); i++) {
-//					tv1.setText(tv1.getText() + " " + obj.getPredictions().get(i).getSeconds() + " " + obj.getPredictions().get(i).getMinutes());
-		}
-
-		//Lists all routes
-//				while (obj2.parsingComplete) ;
-//				for(int i = 0; i < obj2.getRoutes().size(); i++) {
-//					tv1.setText(tv1.getText() + " " + obj2.getRoutes().get(i).getTitle() + " " + obj2.getRoutes().get(i).getTag());
-//				}
-
-		//Lists all stops
-		while (obj3.parsingComplete) ;
-		for (int i = 0; i < obj3.getStops().size(); i++) {
-//					tv1.setText(tv1.getText() + " " + obj3.getStops().get(i).getTitle() + " " + obj3.getStops().get(i).getStopId());
-		}
-		test.clear();
-		test.addAll(obj.getPredictions());
-
-		adapter.notifyDataSetChanged();
-		mSwipeRefreshLayout.setRefreshing(false);
-		isRefreshing = false;
-	}
-
 	class RefreshTask extends AsyncTask<Void,Void,Void> {
 
 		@Override
 		protected void onPreExecute() {
-			isRefreshing = true;
+			mSwipeRefreshLayout.setRefreshing(true);
 		}
 
 		@Override
@@ -173,7 +127,6 @@ public class MainActivity extends AppCompatActivity {
 		protected void onPostExecute(Void result) {
 			adapter.notifyDataSetChanged();
 			mSwipeRefreshLayout.setRefreshing(false);
-			isRefreshing = false;
 		}
 	}
 }
