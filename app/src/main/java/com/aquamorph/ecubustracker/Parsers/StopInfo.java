@@ -44,8 +44,8 @@ public class StopInfo {
 					case XmlPullParser.START_TAG:
 						if (name.equals("stop")) {
 							if (myParser.getAttributeValue(null, "title") != null) {
-								stops.add(new Stops(myParser.getAttributeValue(null, "title"),
-										myParser.getAttributeValue(null, "tag"),
+								stops.add(new Stops(myParser.getAttributeValue(null, "tag"),
+										myParser.getAttributeValue(null, "title"),
 										Double.parseDouble(myParser.getAttributeValue(null, "lat")),
 										Double.parseDouble(myParser.getAttributeValue(null, "lon")),
 										myParser.getAttributeValue(null, "stopId")));
@@ -99,4 +99,3 @@ public class StopInfo {
 		thread.start();
 	}
 }
-

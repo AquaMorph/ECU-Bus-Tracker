@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
 		refresh();
 		getRoutes();
+		getStop();
 
 		mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 			@Override
@@ -87,6 +88,11 @@ public class MainActivity extends AppCompatActivity {
 		loadPredictionsTask.execute();
 	}
 
+	public void getStop() {
+		final LoadStopTask loadStopTask = new LoadStopTask();
+		loadStopTask.execute();
+	}
+
 	class LoadPredictionsTask extends AsyncTask<Void, Void, Void> {
 
 		@Override
@@ -99,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
 			HandleXML handleXML;
 			String route = "508";
 
-			handleXML = new HandleXML(route);
+			handleXML = new HandleXML(route, "bell");
 			handleXML.fetchXML();
 
 			//Lists all info about a stop
@@ -146,12 +152,19 @@ public class MainActivity extends AppCompatActivity {
 
 		@Override
 		protected Void doInBackground(Void... params) {
-			StopInfo stopInfo = new StopInfo("bell");
+			StopInfo stopInfo = new StopInfo("303");
 			stopInfo.fetchXML();
 			while (stopInfo.parsingComplete) ;
 			stops.clear();
 			stops.addAll(stopInfo.getStops());
 			return null;
+		}
+
+		@Override
+		protected void onPostExecute(Void aVoid) {
+			for (int i = 0; i < stops.size(); i++) {
+				Log.i(TAG, "Stops: " + stops.get(i).getTag());
+			}
 		}
 	}
 }

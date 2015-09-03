@@ -26,8 +26,8 @@ public class HandleXML {
 	private ArrayList<Predictions> predictions = new ArrayList<>();
 	public volatile boolean parsingComplete = true;
 
-	public HandleXML(String route) {
-		this.urlString = MainActivity.URL + "?command=predictions&a=ecu&r=" + route + "&s=bell";
+	public HandleXML(String route, String stop) {
+		this.urlString = MainActivity.URL + "?command=predictions&a=ecu&r=" + route + "&s=" + stop;
 	}
 
 	public String getRouteTag() {
