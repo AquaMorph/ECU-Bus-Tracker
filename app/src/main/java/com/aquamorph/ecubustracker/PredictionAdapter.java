@@ -50,7 +50,7 @@ public class PredictionAdapter extends RecyclerView.Adapter<PredictionAdapter.My
 		Drawable busicon = MrVector.inflate(context.getResources(), R.drawable.vehicle12);
 		if(current.getMinutes() <= 5) {
 			busicon.setColorFilter(0xff4CAF50, PorterDuff.Mode.MULTIPLY);
-		} else if(current.getMinutes() <= 10) {
+		} else if(current.getMinutes() <= 15) {
 			busicon.setColorFilter(0xffFFC107, PorterDuff.Mode.MULTIPLY);
 		} else {
 			busicon.setColorFilter(0xffF44336, PorterDuff.Mode.MULTIPLY);

@@ -1,5 +1,6 @@
 package com.aquamorph.ecubustracker;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -27,11 +29,13 @@ public class MainActivity extends AppCompatActivity {
 	private RecyclerView recyclerView;
 	private PredictionAdapter adapter;
 	private SwipeRefreshLayout mSwipeRefreshLayout;
+	private boolean isRefreshing = false;
 	ArrayList<Predictions> test = new ArrayList<>();
 	Button b1;
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN); //Hides keyboard
 		setContentView(R.layout.activity_main);
 		b1 = (Button) findViewById(R.id.button);
 		mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
@@ -43,22 +47,29 @@ public class MainActivity extends AppCompatActivity {
 		recyclerView.setAdapter(adapter);
 		recyclerView.setLayoutManager(llm);
 
+
+
 		ed1 = (EditText) findViewById(R.id.editText);
 
 		ed1.setText("508");
 
+		final RefreshTask refreshTask = new RefreshTask();
+		refreshTask.execute();
+
 		b1.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				refresh();
+				final RefreshTask refreshTask = new RefreshTask();
+				refreshTask.execute();
 			}
 		});
+
 
 		mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 			@Override
 			public void onRefresh() {
-				// Refresh items
-				refresh();
+				final RefreshTask refreshTask = new RefreshTask();
+				refreshTask.execute();
 			}
 		});
 	}
@@ -86,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	public void refresh() {
+		isRefreshing = true;
 		String route = ed1.getText().toString();
 //				ed2.setText(route);
 
@@ -126,6 +138,42 @@ public class MainActivity extends AppCompatActivity {
 
 		adapter.notifyDataSetChanged();
 		mSwipeRefreshLayout.setRefreshing(false);
+		isRefreshing = false;
+	}
 
+	class RefreshTask extends AsyncTask<Void,Void,Void> {
+
+		@Override
+		protected void onPreExecute() {
+			isRefreshing = true;
+		}
+
+		@Override
+		protected Void doInBackground(Void... params) {
+			String route = "508";
+
+			obj = new HandleXML(route);
+			obj.fetchXML();
+
+			//Lists all info about a stop
+			while (obj.parsingComplete) ;
+
+			test.clear();
+			test.addAll(obj.getPredictions());
+
+			return null;
+		}
+
+		@Override
+		protected void onProgressUpdate(Void... values) {
+
+		}
+
+		@Override
+		protected void onPostExecute(Void result) {
+			adapter.notifyDataSetChanged();
+			mSwipeRefreshLayout.setRefreshing(false);
+			isRefreshing = false;
+		}
 	}
 }
