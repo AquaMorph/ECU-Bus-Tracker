@@ -1,7 +1,8 @@
-package com.aquamorph.ecubustracker;
+package com.aquamorph.ecubustracker.Parsers;
 
 import android.util.Log;
 
+import com.aquamorph.ecubustracker.MainActivity;
 import com.aquamorph.ecubustracker.Models.Stops;
 
 import org.xmlpull.v1.XmlPullParser;

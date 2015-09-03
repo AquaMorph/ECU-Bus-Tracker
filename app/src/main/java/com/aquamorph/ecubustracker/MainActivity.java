@@ -12,6 +12,11 @@ import android.view.MenuItem;
 import android.view.WindowManager;
 
 import com.aquamorph.ecubustracker.Models.Predictions;
+import com.aquamorph.ecubustracker.Models.Routes;
+import com.aquamorph.ecubustracker.Models.Stops;
+import com.aquamorph.ecubustracker.Parsers.HandleXML;
+import com.aquamorph.ecubustracker.Parsers.RouteList;
+import com.aquamorph.ecubustracker.Parsers.StopInfo;
 
 import java.util.ArrayList;
 
@@ -19,11 +24,12 @@ public class MainActivity extends AppCompatActivity {
 
 	private String TAG = "MainActivity";
 	public static String URL = "http://webservices.nextbus.com/service/publicXMLFeed";
-	private StopInfo obj3;
 	private RecyclerView recyclerView;
 	private PredictionAdapter adapter;
 	private SwipeRefreshLayout mSwipeRefreshLayout;
-	ArrayList<Predictions> test = new ArrayList<>();
+	ArrayList<Predictions> predictions = new ArrayList<>();
+	ArrayList<Routes> routes = new ArrayList<>();
+	ArrayList<Stops> stops = new ArrayList<>();
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -32,16 +38,14 @@ public class MainActivity extends AppCompatActivity {
 		mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
 
 		recyclerView = (RecyclerView) findViewById(R.id.rv);
-		adapter = new PredictionAdapter(getApplicationContext(), test);
+		adapter = new PredictionAdapter(getApplicationContext(), predictions);
 		LinearLayoutManager llm = new LinearLayoutManager(this);
 		llm.setOrientation(LinearLayoutManager.VERTICAL);
 		recyclerView.setAdapter(adapter);
 		recyclerView.setLayoutManager(llm);
 
-		final LoadRouteListTask loadPredictionsTask = new LoadRouteListTask();
-		loadPredictionsTask.execute();
-
 		refresh();
+		getRoutes();
 
 		mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 			@Override
@@ -78,7 +82,12 @@ public class MainActivity extends AppCompatActivity {
 		loadPredictionsTask.execute();
 	}
 
-	class LoadPredictionsTask extends AsyncTask<Void,Void,Void> {
+	public void getRoutes() {
+		final LoadRouteListTask loadPredictionsTask = new LoadRouteListTask();
+		loadPredictionsTask.execute();
+	}
+
+	class LoadPredictionsTask extends AsyncTask<Void, Void, Void> {
 
 		@Override
 		protected void onPreExecute() {
@@ -96,9 +105,8 @@ public class MainActivity extends AppCompatActivity {
 			//Lists all info about a stop
 			while (handleXML.parsingComplete) ;
 
-			test.clear();
-			test.addAll(handleXML.getPredictions());
-
+			predictions.clear();
+			predictions.addAll(handleXML.getPredictions());
 			return null;
 		}
 
@@ -114,19 +122,35 @@ public class MainActivity extends AppCompatActivity {
 		}
 	}
 
-	class LoadRouteListTask extends AsyncTask<Void,Void,Void> {
+	class LoadRouteListTask extends AsyncTask<Void, Void, Void> {
 
 		@Override
 		protected Void doInBackground(Void... params) {
 			RouteList routeList = new RouteList();
 			routeList.fetchXML();
+			while (routeList.parsingComplete) ;
+			routes.clear();
+			routes.addAll(routeList.getRoutes());
+			return null;
+		}
 
-			while (routeList.parsingComplete);
-
-			for(int i = 0; i < routeList.getRoutes().size(); i++) {
-				Log.i(TAG, "Routes: " + routeList.getRoutes().get(i).getTitle());
+		@Override
+		protected void onPostExecute(Void aVoid) {
+			for (int i = 0; i < routes.size(); i++) {
+				Log.i(TAG, "Routes: " + routes.get(i).getTitle());
 			}
+		}
+	}
 
+	class LoadStopTask extends AsyncTask<Void, Void, Void> {
+
+		@Override
+		protected Void doInBackground(Void... params) {
+			StopInfo stopInfo = new StopInfo("bell");
+			stopInfo.fetchXML();
+			while (stopInfo.parsingComplete) ;
+			stops.clear();
+			stops.addAll(stopInfo.getStops());
 			return null;
 		}
 	}
