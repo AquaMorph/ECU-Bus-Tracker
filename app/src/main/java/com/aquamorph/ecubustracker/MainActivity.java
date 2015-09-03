@@ -6,6 +6,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
@@ -18,8 +19,6 @@ public class MainActivity extends AppCompatActivity {
 
 	private String TAG = "MainActivity";
 	public static String URL = "http://webservices.nextbus.com/service/publicXMLFeed";
-	private HandleXML obj;
-	private RouteList obj2;
 	private StopInfo obj3;
 	private RecyclerView recyclerView;
 	private PredictionAdapter adapter;
@@ -39,14 +38,15 @@ public class MainActivity extends AppCompatActivity {
 		recyclerView.setAdapter(adapter);
 		recyclerView.setLayoutManager(llm);
 
-		final RefreshTask refreshTask = new RefreshTask();
-		refreshTask.execute();
+		final LoadRouteListTask loadPredictionsTask = new LoadRouteListTask();
+		loadPredictionsTask.execute();
+
+		refresh();
 
 		mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 			@Override
 			public void onRefresh() {
-				final RefreshTask refreshTask = new RefreshTask();
-				refreshTask.execute();
+				refresh();
 			}
 		});
 	}
@@ -73,7 +73,12 @@ public class MainActivity extends AppCompatActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	class RefreshTask extends AsyncTask<Void,Void,Void> {
+	private void refresh() {
+		final LoadPredictionsTask loadPredictionsTask = new LoadPredictionsTask();
+		loadPredictionsTask.execute();
+	}
+
+	class LoadPredictionsTask extends AsyncTask<Void,Void,Void> {
 
 		@Override
 		protected void onPreExecute() {
@@ -82,16 +87,17 @@ public class MainActivity extends AppCompatActivity {
 
 		@Override
 		protected Void doInBackground(Void... params) {
+			HandleXML handleXML;
 			String route = "508";
 
-			obj = new HandleXML(route);
-			obj.fetchXML();
+			handleXML = new HandleXML(route);
+			handleXML.fetchXML();
 
 			//Lists all info about a stop
-			while (obj.parsingComplete) ;
+			while (handleXML.parsingComplete) ;
 
 			test.clear();
-			test.addAll(obj.getPredictions());
+			test.addAll(handleXML.getPredictions());
 
 			return null;
 		}
@@ -105,6 +111,23 @@ public class MainActivity extends AppCompatActivity {
 		protected void onPostExecute(Void result) {
 			adapter.notifyDataSetChanged();
 			mSwipeRefreshLayout.setRefreshing(false);
+		}
+	}
+
+	class LoadRouteListTask extends AsyncTask<Void,Void,Void> {
+
+		@Override
+		protected Void doInBackground(Void... params) {
+			RouteList routeList = new RouteList();
+			routeList.fetchXML();
+
+			while (routeList.parsingComplete);
+
+			for(int i = 0; i < routeList.getRoutes().size(); i++) {
+				Log.i(TAG, "Routes: " + routeList.getRoutes().get(i).getTitle());
+			}
+
+			return null;
 		}
 	}
 }

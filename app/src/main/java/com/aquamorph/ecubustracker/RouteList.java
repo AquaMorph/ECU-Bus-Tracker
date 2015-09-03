@@ -18,7 +18,7 @@ public class RouteList {
 	private String urlString = null;
 	private XmlPullParserFactory xmlFactoryObject;
 	public volatile boolean parsingComplete = true;
-	private ArrayList<Routes> routes;
+	private ArrayList<Routes> routes = new ArrayList<>();
 
 	public RouteList() {
 		this.urlString = MainActivity.URL + "?command=routeList&a=ecu";
@@ -31,7 +31,6 @@ public class RouteList {
 
 	public void parseXMLAndStoreIt(XmlPullParser myParser) {
 		int event;
-		String text = null;
 
 		try {
 			event = myParser.getEventType();
@@ -78,12 +77,12 @@ public class RouteList {
 
 					InputStream stream = conn.getInputStream();
 					xmlFactoryObject = XmlPullParserFactory.newInstance();
-					XmlPullParser myparser = xmlFactoryObject.newPullParser();
+					XmlPullParser xmlPullParser = xmlFactoryObject.newPullParser();
 
-					myparser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
-					myparser.setInput(stream, null);
+					xmlPullParser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
+					xmlPullParser.setInput(stream, null);
 
-					parseXMLAndStoreIt(myparser);
+					parseXMLAndStoreIt(xmlPullParser);
 					stream.close();
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -92,6 +91,4 @@ public class RouteList {
 		});
 		thread.start();
 	}
-
-
 }
