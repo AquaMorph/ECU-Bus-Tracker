@@ -14,7 +14,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class HandleXML {
+public class RouteInfo {
 
 	private String TAG = "HandleXML";
 
@@ -24,7 +24,7 @@ public class HandleXML {
 	private ArrayList<RouteData> routeData = new ArrayList<>();
 	public volatile boolean parsingComplete = true;
 
-	public HandleXML(String route, String stop) {
+	public RouteInfo(String route, String stop) {
 		this.urlString = MainActivity.URL + "?command=predictions" + MainActivity.UNIVERSITY + "&r="
 				+ route + "&s=" + stop;
 	}

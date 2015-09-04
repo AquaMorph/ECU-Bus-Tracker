@@ -14,7 +14,7 @@ import android.view.MenuItem;
 import com.aquamorph.ecubustracker.Models.Predictions;
 import com.aquamorph.ecubustracker.Models.Routes;
 import com.aquamorph.ecubustracker.Models.Stops;
-import com.aquamorph.ecubustracker.Parsers.HandleXML;
+import com.aquamorph.ecubustracker.Parsers.RouteInfo;
 import com.aquamorph.ecubustracker.Parsers.RouteList;
 import com.aquamorph.ecubustracker.Parsers.StopInfo;
 
@@ -109,16 +109,16 @@ public class MainActivity extends AppCompatActivity {
 
 		@Override
 		protected Void doInBackground(Void... params) {
-			HandleXML handleXML;
+			RouteInfo routeInfo;
 
-			handleXML = new HandleXML(routeID, stops.get(0).getTag());
-			handleXML.fetchXML();
+			routeInfo = new RouteInfo(routeID, stops.get(0).getTag());
+			routeInfo.fetchXML();
 
 			//Lists all info about a stop
-			while (handleXML.parsingComplete) ;
+			while (routeInfo.parsingComplete) ;
 
 			predictions.clear();
-			predictions.addAll(handleXML.getPredictions());
+			predictions.addAll(routeInfo.getPredictions());
 			return null;
 		}
 
