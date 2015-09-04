@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.aquamorph.ecubustracker.MainActivity;
 import com.aquamorph.ecubustracker.Models.Predictions;
+import com.aquamorph.ecubustracker.Models.RouteData;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -17,13 +18,10 @@ public class HandleXML {
 
 	private String TAG = "HandleXML";
 
-	private String routeTitle = "routeTitle";
-	private String routeTag = "routeTag";
-	private String stopTitle = "stopTitle";
-	private String stopTag = "stopTag";
 	private String urlString = null;
 	private XmlPullParserFactory xmlFactoryObject;
 	private ArrayList<Predictions> predictions = new ArrayList<>();
+	private ArrayList<RouteData> routeData = new ArrayList<>();
 	public volatile boolean parsingComplete = true;
 
 	public HandleXML(String route, String stop) {
@@ -31,20 +29,8 @@ public class HandleXML {
 				+ route + "&s=" + stop;
 	}
 
-	public String getRouteTag() {
-		return routeTag;
-	}
-
-	public String getRouteTitle() {
-		return routeTitle;
-	}
-
-	public String getStopTitle() {
-		return stopTitle;
-	}
-
-	public String getStopTag() {
-		return stopTag;
+	public ArrayList<RouteData> getRouteData() {
+		return routeData;
 	}
 
 	public ArrayList<Predictions> getPredictions() {
@@ -64,10 +50,10 @@ public class HandleXML {
 				switch (event) {
 					case XmlPullParser.START_TAG:
 						if (name.equals("predictions")) {
-							routeTag = myParser.getAttributeValue(null, "routeTag");
-							routeTitle = myParser.getAttributeValue(null, "routeTitle");
-							stopTitle = myParser.getAttributeValue(null, "stopTitle");
-							stopTag = myParser.getAttributeValue(null, "stopTag");
+							routeData.add(new RouteData(myParser.getAttributeValue(null, "routeTag"),
+								myParser.getAttributeValue(null, "routeTitle"),
+								myParser.getAttributeValue(null, "stopTitle"),
+								myParser.getAttributeValue(null, "stopTag")));
 						}
 						if (name.equals("prediction")) {
 							Log.i(TAG, myParser.getAttributeValue(null, "seconds"));
