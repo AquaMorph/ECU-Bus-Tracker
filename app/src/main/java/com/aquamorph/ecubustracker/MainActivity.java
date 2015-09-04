@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
 	ArrayList<Routes> routes = new ArrayList<>();
 	ArrayList<Stops> stops = new ArrayList<>();
 	ArrayList<String> stopNames = new ArrayList<>();
-	String routeID = "804";
+	String routeID = "508";
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
