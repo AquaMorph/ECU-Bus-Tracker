@@ -1,5 +1,6 @@
 package com.aquamorph.ecubustracker;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
+import android.widget.Spinner;
 
 import com.aquamorph.ecubustracker.Models.Predictions;
 import com.aquamorph.ecubustracker.Models.Routes;
@@ -21,15 +23,17 @@ import com.aquamorph.ecubustracker.Parsers.StopInfo;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-
 	private String TAG = "MainActivity";
 	public static String URL = "http://webservices.nextbus.com/service/publicXMLFeed";
 	private RecyclerView recyclerView;
 	private PredictionAdapter adapter;
 	private SwipeRefreshLayout mSwipeRefreshLayout;
+	private Spinner stopSpinner;
 	ArrayList<Predictions> predictions = new ArrayList<>();
 	ArrayList<Routes> routes = new ArrayList<>();
 	ArrayList<Stops> stops = new ArrayList<>();
+	ArrayList<String> stopNames = new ArrayList<>();
+	String routeID = "804";
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -44,9 +48,9 @@ public class MainActivity extends AppCompatActivity {
 		recyclerView.setAdapter(adapter);
 		recyclerView.setLayoutManager(llm);
 
-		refresh();
 		getRoutes();
 		getStop();
+		refresh();
 
 		mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 			@Override
@@ -73,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
 		//noinspection SimplifiableIfStatement
 		if (id == R.id.action_settings) {
+			openSettings();
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -93,6 +98,11 @@ public class MainActivity extends AppCompatActivity {
 		loadStopTask.execute();
 	}
 
+	public void openSettings() {
+		Intent intent = new Intent(this, Settings.class);
+		startActivity(intent);
+	}
+
 	class LoadPredictionsTask extends AsyncTask<Void, Void, Void> {
 
 		@Override
@@ -103,9 +113,8 @@ public class MainActivity extends AppCompatActivity {
 		@Override
 		protected Void doInBackground(Void... params) {
 			HandleXML handleXML;
-			String route = "508";
 
-			handleXML = new HandleXML(route, "bell");
+			handleXML = new HandleXML(routeID, stops.get(0).getTag());
 			handleXML.fetchXML();
 
 			//Lists all info about a stop
@@ -152,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
 
 		@Override
 		protected Void doInBackground(Void... params) {
-			StopInfo stopInfo = new StopInfo("303");
+			StopInfo stopInfo = new StopInfo(routeID);
 			stopInfo.fetchXML();
 			while (stopInfo.parsingComplete) ;
 			stops.clear();
@@ -164,6 +173,7 @@ public class MainActivity extends AppCompatActivity {
 		protected void onPostExecute(Void aVoid) {
 			for (int i = 0; i < stops.size(); i++) {
 				Log.i(TAG, "Stops: " + stops.get(i).getTag());
+				stopNames.add(stops.get(i).getTitle());
 			}
 		}
 	}
