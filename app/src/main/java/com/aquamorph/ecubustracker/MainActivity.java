@@ -10,8 +10,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.WindowManager;
-import android.widget.Spinner;
 
 import com.aquamorph.ecubustracker.Models.Predictions;
 import com.aquamorph.ecubustracker.Models.Routes;
@@ -24,11 +22,11 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 	private String TAG = "MainActivity";
-	public static String URL = "http://webservices.nextbus.com/service/publicXMLFeed";
+	public static final String URL = "http://webservices.nextbus.com/service/publicXMLFeed";
+	public static final String UNIVERSITY = "&a=ecu";
 	private RecyclerView recyclerView;
 	private PredictionAdapter adapter;
 	private SwipeRefreshLayout mSwipeRefreshLayout;
-	private Spinner stopSpinner;
 	ArrayList<Predictions> predictions = new ArrayList<>();
 	ArrayList<Routes> routes = new ArrayList<>();
 	ArrayList<Stops> stops = new ArrayList<>();
@@ -37,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN); //Hides keyboard
 		setContentView(R.layout.activity_main);
 		mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
 

@@ -22,7 +22,7 @@ public class RouteList {
 	private ArrayList<Routes> routes = new ArrayList<>();
 
 	public RouteList() {
-		this.urlString = MainActivity.URL + "?command=routeList&a=ecu";
+		this.urlString = MainActivity.URL + "?command=routeList" + MainActivity.UNIVERSITY;
 		Log.i(TAG, "URL: " + urlString);
 	}
 

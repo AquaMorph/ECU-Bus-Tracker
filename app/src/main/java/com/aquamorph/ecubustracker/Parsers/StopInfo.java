@@ -22,7 +22,8 @@ public class StopInfo {
 	private ArrayList<Stops> stops = new ArrayList<>();
 
 	public StopInfo(String stop) {
-		this.urlString = MainActivity.URL + "?command=routeConfig&a=ecu&r=" + stop;
+		this.urlString = MainActivity.URL + "?command=routeConfig" + MainActivity.UNIVERSITY
+				+ "&r=" + stop;
 		Log.i(TAG, "URL: " + urlString);
 	}
 

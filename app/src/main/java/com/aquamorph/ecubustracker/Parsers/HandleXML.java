@@ -27,7 +27,8 @@ public class HandleXML {
 	public volatile boolean parsingComplete = true;
 
 	public HandleXML(String route, String stop) {
-		this.urlString = MainActivity.URL + "?command=predictions&a=ecu&r=" + route + "&s=" + stop;
+		this.urlString = MainActivity.URL + "?command=predictions" + MainActivity.UNIVERSITY + "&r="
+				+ route + "&s=" + stop;
 	}
 
 	public String getRouteTag() {
@@ -70,14 +71,17 @@ public class HandleXML {
 						}
 						if (name.equals("prediction")) {
 							Log.i(TAG, myParser.getAttributeValue(null, "seconds"));
-							predictions.add(new Predictions(Integer.parseInt(myParser.getAttributeValue(null, "seconds")),
+							predictions.add(new Predictions(Integer.parseInt(myParser
+									.getAttributeValue(null, "seconds")),
 									Integer.parseInt(myParser.getAttributeValue(null, "minutes")),
-									Boolean.parseBoolean(myParser.getAttributeValue(null, "isDeparture")),
-									Boolean.parseBoolean(myParser.getAttributeValue(null, "affectedByLayover")),
+									Boolean.parseBoolean(myParser
+											.getAttributeValue(null, "isDeparture")),
+									Boolean.parseBoolean(myParser
+											.getAttributeValue(null, "affectedByLayover")),
 									myParser.getAttributeValue(null, "dirTag"),
 									Integer.parseInt(myParser.getAttributeValue(null, "vehicle")),
 									Integer.parseInt(myParser.getAttributeValue(null, "block"))
-											));
+							));
 						}
 						break;
 
