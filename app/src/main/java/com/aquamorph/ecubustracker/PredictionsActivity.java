@@ -10,7 +10,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import com.aquamorph.ecubustracker.Models.Predictions;
 import com.aquamorph.ecubustracker.Models.Routes;
@@ -22,18 +21,15 @@ import com.aquamorph.ecubustracker.Parsers.StopInfo;
 import java.util.ArrayList;
 
 public class PredictionsActivity extends AppCompatActivity {
-	private String TAG = "MainActivity";
-	public static final String URL = "http://webservices.nextbus.com/service/publicXMLFeed";
-	public static final String UNIVERSITY = "&a=ecu";
+	private String TAG = "PredictionsActivity";
 	private RecyclerView recyclerView;
-	private TextView noData;
 	private PredictionAdapter adapter;
 	private SwipeRefreshLayout mSwipeRefreshLayout;
 	ArrayList<Predictions> predictions = new ArrayList<>();
 	ArrayList<Routes> routes = new ArrayList<>();
 	ArrayList<Stops> stops = new ArrayList<>();
 	ArrayList<String> stopNames = new ArrayList<>();
-	String routeID = "508";
+	String routeID;
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -46,6 +42,9 @@ public class PredictionsActivity extends AppCompatActivity {
 		llm.setOrientation(LinearLayoutManager.VERTICAL);
 		recyclerView.setAdapter(adapter);
 		recyclerView.setLayoutManager(llm);
+
+		Bundle bundle = getIntent().getExtras();
+		routeID = bundle.getString("route");
 
 		getRoutes();
 		getStop();

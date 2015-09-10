@@ -12,7 +12,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 	private String TAG = "MainActivity";
 	public static final String URL = "http://webservices.nextbus.com/service/publicXMLFeed";
 	public static final String UNIVERSITY = "&a=ecu";
-	String routeID = "508";
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -56,6 +55,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 		switch (v.getId()) {
 			case R.id.button:
 				Intent intent = new Intent(this, PredictionsActivity.class);
+				Bundle bundle = new Bundle();
+				bundle.putString("route", "803");
+				intent.putExtras(bundle);
 				startActivity(intent);
 				break;
 		}
