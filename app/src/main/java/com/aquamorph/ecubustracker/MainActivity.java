@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,6 +21,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 	private String TAG = "MainActivity";
 	public static final String URL = "http://webservices.nextbus.com/service/publicXMLFeed";
 	public static final String UNIVERSITY = "&a=ecu";
+	private RecyclerView recyclerView;
+	private RouteListAdapter adapter;
 	ArrayList<Routes> routes = new ArrayList<>();
 
 	protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +31,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 		getRoutes();
 		Button button = (Button) findViewById(R.id.button);
 		button.setOnClickListener(this);
+
+		recyclerView = (RecyclerView) findViewById(R.id.routeRV);
+		adapter = new RouteListAdapter(getApplicationContext(), routes);
+		LinearLayoutManager llm = new LinearLayoutManager(this);
+		llm.setOrientation(LinearLayoutManager.VERTICAL);
+		recyclerView.setAdapter(adapter);
+		recyclerView.setLayoutManager(llm);
 	}
 
 	@Override

@@ -41,7 +41,7 @@ public class RouteListAdapter extends RecyclerView.Adapter<RouteListAdapter.MyVi
 
 	@Override
 	public int getItemCount() {
-		return 0;
+		return data.size();
 	}
 
 	public class MyViewHolder extends RecyclerView.ViewHolder {
