@@ -12,10 +12,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.aquamorph.ecubustracker.Models.Predictions;
-import com.aquamorph.ecubustracker.Models.Routes;
 import com.aquamorph.ecubustracker.Models.Stops;
 import com.aquamorph.ecubustracker.Parsers.RouteInfo;
-import com.aquamorph.ecubustracker.Parsers.RouteList;
 import com.aquamorph.ecubustracker.Parsers.StopInfo;
 
 import java.util.ArrayList;
@@ -26,7 +24,6 @@ public class PredictionsActivity extends AppCompatActivity {
 	private PredictionAdapter adapter;
 	private SwipeRefreshLayout mSwipeRefreshLayout;
 	ArrayList<Predictions> predictions = new ArrayList<>();
-	ArrayList<Routes> routes = new ArrayList<>();
 	ArrayList<Stops> stops = new ArrayList<>();
 	ArrayList<String> stopNames = new ArrayList<>();
 	String routeID;
@@ -46,7 +43,6 @@ public class PredictionsActivity extends AppCompatActivity {
 		Bundle bundle = getIntent().getExtras();
 		routeID = bundle.getString("route");
 
-		getRoutes();
 		getStop();
 		refresh();
 
@@ -83,11 +79,6 @@ public class PredictionsActivity extends AppCompatActivity {
 
 	private void refresh() {
 		final LoadPredictionsTask loadPredictionsTask = new LoadPredictionsTask();
-		loadPredictionsTask.execute();
-	}
-
-	public void getRoutes() {
-		final LoadRouteListTask loadPredictionsTask = new LoadRouteListTask();
 		loadPredictionsTask.execute();
 	}
 
@@ -132,26 +123,6 @@ public class PredictionsActivity extends AppCompatActivity {
 		protected void onPostExecute(Void result) {
 			adapter.notifyDataSetChanged();
 			mSwipeRefreshLayout.setRefreshing(false);
-		}
-	}
-
-	class LoadRouteListTask extends AsyncTask<Void, Void, Void> {
-
-		@Override
-		protected Void doInBackground(Void... params) {
-			RouteList routeList = new RouteList();
-			routeList.fetchXML();
-			while (routeList.parsingComplete) ;
-			routes.clear();
-			routes.addAll(routeList.getRoutes());
-			return null;
-		}
-
-		@Override
-		protected void onPostExecute(Void aVoid) {
-			for (int i = 0; i < routes.size(); i++) {
-				Log.i(TAG, "Routes: " + routes.get(i).getTitle());
-			}
 		}
 	}
 

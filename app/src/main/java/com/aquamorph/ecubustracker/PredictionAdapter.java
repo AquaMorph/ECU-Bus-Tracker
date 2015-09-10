@@ -37,7 +37,6 @@ public class PredictionAdapter extends RecyclerView.Adapter<PredictionAdapter.My
 	public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 		View view = inflater.inflate(R.layout.busestimate, parent, false);
 		MyViewHolder holder = new MyViewHolder(view);
-
 		return holder;
 	}
 

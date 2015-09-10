@@ -1,21 +1,30 @@
 package com.aquamorph.ecubustracker;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.aquamorph.ecubustracker.Models.Routes;
+import com.aquamorph.ecubustracker.Parsers.RouteList;
+
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 	private String TAG = "MainActivity";
 	public static final String URL = "http://webservices.nextbus.com/service/publicXMLFeed";
 	public static final String UNIVERSITY = "&a=ecu";
+	ArrayList<Routes> routes = new ArrayList<>();
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		getRoutes();
 		Button button = (Button) findViewById(R.id.button);
 		button.setOnClickListener(this);
 	}
@@ -60,6 +69,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 				intent.putExtras(bundle);
 				startActivity(intent);
 				break;
+		}
+	}
+
+	public void getRoutes() {
+		final LoadRouteListTask loadPredictionsTask = new LoadRouteListTask();
+		loadPredictionsTask.execute();
+	}
+
+	class LoadRouteListTask extends AsyncTask<Void, Void, Void> {
+
+		@Override
+		protected Void doInBackground(Void... params) {
+			RouteList routeList = new RouteList();
+			routeList.fetchXML();
+			while (routeList.parsingComplete) ;
+			routes.clear();
+			routes.addAll(routeList.getRoutes());
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(Void aVoid) {
+			for (int i = 0; i < routes.size(); i++) {
+				Log.i(TAG, "Routes: " + routes.get(i).getTitle());
+			}
 		}
 	}
 }
