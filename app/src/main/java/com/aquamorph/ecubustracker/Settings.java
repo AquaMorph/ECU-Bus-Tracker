@@ -1,12 +1,11 @@
 package com.aquamorph.ecubustracker;
 
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
+import android.support.v7.app.AppCompatActivity;
 
-public class Settings extends PreferenceActivity {
+public class Settings extends AppCompatActivity {
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 	}
 }

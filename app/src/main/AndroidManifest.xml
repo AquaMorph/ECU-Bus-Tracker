@@ -21,6 +21,8 @@
         </activity>
         <activity android:name=".Settings" >
         </activity>
+        <activity android:name=".PredictionsActivity" >
+        </activity>
     </application>
 
 </manifest>

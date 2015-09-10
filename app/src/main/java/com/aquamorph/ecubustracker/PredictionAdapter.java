@@ -29,7 +29,6 @@ public class PredictionAdapter extends RecyclerView.Adapter<PredictionAdapter.My
 
 	public PredictionAdapter(Context context,ArrayList<Predictions> data) {
 		inflater = from(context);
-		Log.i(TAG, "Running Adaoter");
 		this.data = data;
 		this.context = context;
 	}
@@ -45,6 +44,7 @@ public class PredictionAdapter extends RecyclerView.Adapter<PredictionAdapter.My
 	@Override
 	public void onBindViewHolder(MyViewHolder holder, int position) {
 		Predictions current = data.get(position);
+		Log.i(TAG, "Position: " + position);
 		holder.seconds.setText(Integer.toString(current.getSeconds()));
 		holder.minutes.setText(Integer.toString(current.getMinutes()));
 		Drawable busicon = MrVector.inflate(context.getResources(), R.drawable.vehicle12);
