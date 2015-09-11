@@ -41,12 +41,13 @@ public class MainActivity extends AppCompatActivity {
 		recyclerView.addOnItemTouchListener(new RecyclerTouchListener(this, recyclerView, new ClickListener() {
 			@Override
 			public void onClick(View view, int position) {
-				launchPredictions(routes.get(position).getTitle().substring(0,3));
+				launchPredictions(routes.get(position).getTitle().substring(0, 3));
 			}
 
 			@Override
 			public void onLongClick(View view, int position) {
-				launchPredictions(routes.get(position).getTitle().substring(0,3));
+//				launchPredictions(routes.get(position).getTitle().substring(0,3));
+//				Toast.makeText(getApplicationContext(), "3D Touch", Toast.LENGTH_SHORT).show();
 			}
 		}));
 	}
