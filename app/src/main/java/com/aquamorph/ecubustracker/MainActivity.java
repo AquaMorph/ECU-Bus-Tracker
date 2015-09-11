@@ -110,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
 			for (int i = 0; i < routes.size(); i++) {
 				Log.i(TAG, "Routes: " + routes.get(i).getTitle());
 			}
+			adapter.notifyDataSetChanged();
 		}
 	}
 
