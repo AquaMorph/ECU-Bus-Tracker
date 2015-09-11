@@ -37,6 +37,7 @@ public class PredictionsActivity extends AppCompatActivity {
 		Bundle bundle = getIntent().getExtras();
 		routeID = bundle.getString("route");
 		actionBar.setTitle(routeID);
+		actionBar.setDisplayHomeAsUpEnabled(true);
 		routeID = routeID.substring(0, 3);
 
 		recyclerView = (RecyclerView) findViewById(R.id.rv);
@@ -70,12 +71,13 @@ public class PredictionsActivity extends AppCompatActivity {
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 
-		int id = item.getItemId();
-
-		//noinspection SimplifiableIfStatement
-		if (id == R.id.action_settings) {
-			openSettings();
-			return true;
+		switch (item.getItemId()) {
+			case android.R.id.home:
+				this.finish();
+				break;
+			case R.id.action_settings:
+				openSettings();
+				break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
