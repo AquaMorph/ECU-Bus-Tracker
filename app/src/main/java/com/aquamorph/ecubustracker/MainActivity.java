@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
 		recyclerView.addOnItemTouchListener(new RecyclerTouchListener(this, recyclerView, new ClickListener() {
 			@Override
 			public void onClick(View view, int position) {
-				launchPredictions(routes.get(position).getTitle().substring(0, 3));
+				launchPredictions(routes.get(position).getTitle());
 			}
 
 			@Override
@@ -146,13 +146,13 @@ public class MainActivity extends AppCompatActivity {
 			if(child!=null && clickListener!=null && gestureDetector.onTouchEvent(e)) {
 				clickListener.onClick(child, rv.getChildPosition(child));
 			}
-			Log.d(TAG, "onInterceptTouchEvent" + gestureDetector.onTouchEvent(e) + e);
+//			Log.d(TAG, "onInterceptTouchEvent" + gestureDetector.onTouchEvent(e) + e);
 			return false;
 		}
 
 		@Override
 		public void onTouchEvent(RecyclerView rv, MotionEvent e) {
-			Log.d(TAG, "onTouchEvent" + e);
+//			Log.d(TAG, "onTouchEvent" + e);
 
 		}
 

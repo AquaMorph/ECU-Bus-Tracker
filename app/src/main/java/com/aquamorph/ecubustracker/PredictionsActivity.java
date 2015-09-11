@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -32,6 +33,11 @@ public class PredictionsActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.predictions);
 		mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
+		ActionBar actionBar = getSupportActionBar();
+		Bundle bundle = getIntent().getExtras();
+		routeID = bundle.getString("route");
+		actionBar.setTitle(routeID);
+		routeID = routeID.substring(0, 3);
 
 		recyclerView = (RecyclerView) findViewById(R.id.rv);
 		adapter = new PredictionAdapter(getApplicationContext(), predictions);
@@ -39,9 +45,6 @@ public class PredictionsActivity extends AppCompatActivity {
 		llm.setOrientation(LinearLayoutManager.VERTICAL);
 		recyclerView.setAdapter(adapter);
 		recyclerView.setLayoutManager(llm);
-
-		Bundle bundle = getIntent().getExtras();
-		routeID = bundle.getString("route");
 
 		getStop();
 		refresh();
