@@ -42,7 +42,7 @@
                 android:padding="8dp"
                 android:text="42:42"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/cardview_dark_background"/>
+                android:textColor="@color/primary_text"/>
 
             <TextView
                 android:id="@+id/minutes"
@@ -51,7 +51,7 @@
                 android:padding="8dp"
                 android:text="Minutes"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/cardview_dark_background"/>
+                android:textColor="@color/primary_text"/>
 
             <TextView
                 android:id="@+id/seconds"
@@ -60,7 +60,7 @@
                 android:padding="8dp"
                 android:text="Seconds"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/cardview_dark_background"/>
+                android:textColor="@color/primary_text"/>
         </LinearLayout>
 
     </android.support.v7.widget.CardView>

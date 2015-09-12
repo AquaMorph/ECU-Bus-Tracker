@@ -26,6 +26,6 @@
             android:layout_alignParentTop="true"
             android:text="Large Text"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/cardview_dark_background"/>
+            android:textColor="@color/primary_text"/>
     </android.support.v7.widget.CardView>
 </RelativeLayout>
