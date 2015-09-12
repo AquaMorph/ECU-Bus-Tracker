@@ -36,6 +36,15 @@
                 />
 
             <TextView
+                android:id="@+id/time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="42:42"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/cardview_dark_background"/>
+
+            <TextView
                 android:id="@+id/minutes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

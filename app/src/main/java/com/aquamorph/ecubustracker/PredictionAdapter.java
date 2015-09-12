@@ -15,7 +15,10 @@ import android.widget.TextView;
 import com.aquamorph.ecubustracker.Models.Predictions;
 import com.telly.mrvector.MrVector;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.TimeZone;
 
 import static android.view.LayoutInflater.from;
 
@@ -44,6 +47,12 @@ public class PredictionAdapter extends RecyclerView.Adapter<PredictionAdapter.My
 	public void onBindViewHolder(MyViewHolder holder, int position) {
 		Predictions current = data.get(position);
 		Log.i(TAG, "Position: " + position);
+
+		SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
+		sdf.setTimeZone(TimeZone.getTimeZone("America/New_York"));
+		String theTime = sdf.format(new Date(System.currentTimeMillis() + current.getSeconds()*1000));
+
+		holder.time.setText(theTime);
 		holder.seconds.setText(Integer.toString(current.getSeconds()));
 		holder.minutes.setText(Integer.toString(current.getMinutes()));
 		Drawable busicon = MrVector.inflate(context.getResources(), R.drawable.vehicle12);
@@ -70,12 +79,14 @@ public class PredictionAdapter extends RecyclerView.Adapter<PredictionAdapter.My
 
 	class MyViewHolder extends RecyclerView.ViewHolder {
 
+		protected TextView time;
 		protected TextView seconds;
 		protected TextView minutes;
 		protected ImageView busicon;
 
 		public MyViewHolder(View itemView) {
 			super(itemView);
+			time = (TextView) itemView.findViewById(R.id.time);
 			seconds = (TextView) itemView.findViewById(R.id.seconds);
 			minutes = (TextView) itemView.findViewById(R.id.minutes);
 			busicon = (ImageView) itemView.findViewById(R.id.imageView);
