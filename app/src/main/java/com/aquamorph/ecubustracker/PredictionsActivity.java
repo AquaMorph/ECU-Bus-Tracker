@@ -4,10 +4,10 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,6 +24,7 @@ public class PredictionsActivity extends AppCompatActivity {
 	private RecyclerView recyclerView;
 	private PredictionAdapter adapter;
 	private SwipeRefreshLayout mSwipeRefreshLayout;
+	private Toolbar toolbar;
 	ArrayList<Predictions> predictions = new ArrayList<>();
 	ArrayList<Stops> stops = new ArrayList<>();
 	ArrayList<String> stopNames = new ArrayList<>();
@@ -32,12 +33,15 @@ public class PredictionsActivity extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.predictions);
+
+		toolbar = (Toolbar) findViewById(R.id.toolbar);
+		setSupportActionBar(toolbar);
+		getSupportActionBar().setDisplayShowTitleEnabled(false);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 		mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
-		ActionBar actionBar = getSupportActionBar();
 		Bundle bundle = getIntent().getExtras();
 		routeID = bundle.getString("route");
-		actionBar.setTitle(routeID);
-		actionBar.setDisplayHomeAsUpEnabled(true);
 		routeID = routeID.substring(0, 3);
 
 		recyclerView = (RecyclerView) findViewById(R.id.rv);
