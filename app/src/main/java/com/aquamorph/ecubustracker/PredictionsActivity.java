@@ -11,6 +11,10 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.aquamorph.ecubustracker.Models.Predictions;
 import com.aquamorph.ecubustracker.Models.Stops;
@@ -23,8 +27,10 @@ public class PredictionsActivity extends AppCompatActivity {
 	private String TAG = "PredictionsActivity";
 	private RecyclerView recyclerView;
 	private PredictionAdapter adapter;
+	private ArrayAdapter dataAdapter;
 	private SwipeRefreshLayout mSwipeRefreshLayout;
 	private Toolbar toolbar;
+	private Spinner spinner;
 	ArrayList<Predictions> predictions = new ArrayList<>();
 	ArrayList<Stops> stops = new ArrayList<>();
 	ArrayList<String> stopNames = new ArrayList<>();
@@ -33,6 +39,13 @@ public class PredictionsActivity extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.predictions);
+		stopNames.add("");
+		spinner = (Spinner) findViewById(R.id.spinner);
+		dataAdapter = new ArrayAdapter(getApplicationContext(),android.R.layout.simple_spinner_item, stopNames);
+		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinner.setAdapter(dataAdapter);
+		spinner.setOnItemSelectedListener(new StopListener());
+
 
 		toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
@@ -52,6 +65,10 @@ public class PredictionsActivity extends AppCompatActivity {
 		recyclerView.setLayoutManager(llm);
 
 		getStop();
+
+
+
+
 		refresh();
 
 		mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -149,10 +166,30 @@ public class PredictionsActivity extends AppCompatActivity {
 
 		@Override
 		protected void onPostExecute(Void aVoid) {
+			stopNames.clear();
 			for (int i = 0; i < stops.size(); i++) {
 				Log.i(TAG, "Stops: " + stops.get(i).getTag());
 				stopNames.add(stops.get(i).getTitle());
 			}
+			dataAdapter.notifyDataSetChanged();
+		}
+	}
+
+	private class StopListener implements AdapterView.OnItemClickListener, AdapterView.OnItemSelectedListener {
+
+		@Override
+		public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+			Log.i(TAG, "Position" + parent.getItemAtPosition(position).toString());
+		}
+
+		@Override
+		public void onNothingSelected(AdapterView<?> parent) {
+
+		}
+
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
 		}
 	}
 }
