@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,13 +25,12 @@ public class MainActivity extends AppCompatActivity {
 	public static final String UNIVERSITY = "&a=ecu";
 	private RecyclerView recyclerView;
 	private RouteListAdapter adapter;
-	private Toolbar toolbar;
 	ArrayList<Routes> routes = new ArrayList<>();
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		toolbar = (Toolbar) findViewById(R.id.toolbar);
+		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 		getRoutes();
 
@@ -50,8 +48,6 @@ public class MainActivity extends AppCompatActivity {
 
 			@Override
 			public void onLongClick(View view, int position) {
-//				launchPredictions(routes.get(position).getTitle().substring(0,3));
-//				Toast.makeText(getApplicationContext(), "3D Touch", Toast.LENGTH_SHORT).show();
 			}
 		}));
 	}
@@ -65,14 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-
-		int id = item.getItemId();
-
-		//noinspection SimplifiableIfStatement
-		if (id == R.id.action_settings) {
+		if (item.getItemId() == R.id.action_settings) {
 			openSettings();
 			return true;
 		}
@@ -112,9 +101,6 @@ public class MainActivity extends AppCompatActivity {
 
 		@Override
 		protected void onPostExecute(Void aVoid) {
-			for (int i = 0; i < routes.size(); i++) {
-				Log.i(TAG, "Routes: " + routes.get(i).getTitle());
-			}
 			adapter.notifyDataSetChanged();
 		}
 	}
@@ -129,7 +115,6 @@ public class MainActivity extends AppCompatActivity {
 			gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener(){
 				@Override
 				public boolean onSingleTapUp(MotionEvent e) {
-//					return super.onSingleTapUp(e);
 					return true;
 				}
 
@@ -148,15 +133,13 @@ public class MainActivity extends AppCompatActivity {
 		public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
 			View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
 			if(child!=null && clickListener!=null && gestureDetector.onTouchEvent(e)) {
-				clickListener.onClick(child, rv.getChildPosition(child));
+				clickListener.onClick(child, rv.getChildAdapterPosition(child));
 			}
-//			Log.d(TAG, "onInterceptTouchEvent" + gestureDetector.onTouchEvent(e) + e);
 			return false;
 		}
 
 		@Override
 		public void onTouchEvent(RecyclerView rv, MotionEvent e) {
-//			Log.d(TAG, "onTouchEvent" + e);
 
 		}
 
