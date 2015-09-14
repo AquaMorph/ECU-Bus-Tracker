@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,14 +33,16 @@ public class PredictionsActivity extends AppCompatActivity {
 	ArrayList<Predictions> predictions = new ArrayList<>();
 	ArrayList<Stops> stops = new ArrayList<>();
 	ArrayList<String> stopNames = new ArrayList<>();
+	ArrayList<String> stopID = new ArrayList<>();
 	String routeID;
+	String stop = null;
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.predictions);
 		stopNames.add("");
 		spinner = (Spinner) findViewById(R.id.spinner);
-		dataAdapter = new ArrayAdapter(getApplicationContext(),android.R.layout.simple_spinner_item, stopNames);
+		dataAdapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, stopNames);
 		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner.setAdapter(dataAdapter);
 		spinner.setOnItemSelectedListener(new StopListener());
@@ -67,9 +68,7 @@ public class PredictionsActivity extends AppCompatActivity {
 		getStop();
 
 
-
-
-		refresh();
+//		refresh();
 
 		mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 			@Override
@@ -129,7 +128,8 @@ public class PredictionsActivity extends AppCompatActivity {
 		protected Void doInBackground(Void... params) {
 			RouteInfo routeInfo;
 
-			routeInfo = new RouteInfo(routeID, stops.get(0).getTag());
+			if (stop == null) stop = stops.get(0).getTag();
+			routeInfo = new RouteInfo(routeID, stop);
 			routeInfo.fetchXML();
 
 			//Lists all info about a stop
@@ -168,7 +168,7 @@ public class PredictionsActivity extends AppCompatActivity {
 		protected void onPostExecute(Void aVoid) {
 			stopNames.clear();
 			for (int i = 0; i < stops.size(); i++) {
-				Log.i(TAG, "Stops: " + stops.get(i).getTag());
+				stopID.add(stops.get(i).getTag());
 				stopNames.add(stops.get(i).getTitle());
 			}
 			dataAdapter.notifyDataSetChanged();
@@ -179,7 +179,8 @@ public class PredictionsActivity extends AppCompatActivity {
 
 		@Override
 		public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-			Log.i(TAG, "Position" + parent.getItemAtPosition(position).toString());
+			if (stopID.size() > 0) stop = stopID.get(position);
+			refresh();
 		}
 
 		@Override
