@@ -42,7 +42,7 @@ public class PredictionsActivity extends AppCompatActivity {
 		setContentView(R.layout.predictions);
 		stopNames.add("");
 		spinner = (Spinner) findViewById(R.id.spinner);
-		dataAdapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, stopNames);
+		dataAdapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, stopNames);
 		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner.setAdapter(dataAdapter);
 		spinner.setOnItemSelectedListener(new StopListener());
@@ -66,9 +66,6 @@ public class PredictionsActivity extends AppCompatActivity {
 		recyclerView.setLayoutManager(llm);
 
 		getStop();
-
-
-//		refresh();
 
 		mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 			@Override
