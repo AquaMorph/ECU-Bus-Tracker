@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,11 +54,15 @@ public class PredictionAdapter extends RecyclerView.Adapter<PredictionAdapter.My
 		holder.seconds.setText(Integer.toString(current.getSeconds()));
 		holder.minutes.setText(Integer.toString(current.getMinutes()));
 		Drawable busicon = ContextCompat.getDrawable(context, R.drawable.bus_icon);
+		busicon = busicon.mutate();
 
+		Log.i(TAG, "Time: " + current.getMinutes());
 		if(current.getMinutes() <= 5) {
 			busicon.setColorFilter(0xff4CAF50, PorterDuff.Mode.MULTIPLY);
+			Log.i(TAG, "5 Minutes");
 		} else if(current.getMinutes() <= 15) {
 			busicon.setColorFilter(0xffFFC107, PorterDuff.Mode.MULTIPLY);
+			Log.i(TAG, "15 Minutes");
 		} else {
 			busicon.setColorFilter(0xffF44336, PorterDuff.Mode.MULTIPLY);
 		}
