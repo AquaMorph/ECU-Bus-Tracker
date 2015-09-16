@@ -4,8 +4,8 @@ import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.aquamorph.ecubustracker.Models.Predictions;
-import com.telly.mrvector.MrVector;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -46,8 +45,6 @@ public class PredictionAdapter extends RecyclerView.Adapter<PredictionAdapter.My
 	@Override
 	public void onBindViewHolder(MyViewHolder holder, int position) {
 		Predictions current = data.get(position);
-		Log.i(TAG, "Position: " + position);
-
 		SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
 		sdf.setTimeZone(TimeZone.getTimeZone("America/New_York"));
 		String theTime = sdf.format(new Date(System.currentTimeMillis() + current.getSeconds()*1000));
@@ -55,8 +52,7 @@ public class PredictionAdapter extends RecyclerView.Adapter<PredictionAdapter.My
 		holder.time.setText(theTime);
 		holder.seconds.setText(Integer.toString(current.getSeconds()));
 		holder.minutes.setText(Integer.toString(current.getMinutes()));
-		Drawable busicon = MrVector.inflate(context.getResources(), R.drawable.vehicle12);
-//		Drawable busicon = ResourcesCompat.getDrawable(context, R.drawable.vehicle12);
+		Drawable busicon = ContextCompat.getDrawable(context, R.drawable.bus_icon);
 
 		if(current.getMinutes() <= 5) {
 			busicon.setColorFilter(0xff4CAF50, PorterDuff.Mode.MULTIPLY);

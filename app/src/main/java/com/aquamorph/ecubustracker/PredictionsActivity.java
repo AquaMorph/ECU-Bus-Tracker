@@ -28,8 +28,6 @@ public class PredictionsActivity extends AppCompatActivity {
 	private PredictionAdapter adapter;
 	private ArrayAdapter dataAdapter;
 	private SwipeRefreshLayout mSwipeRefreshLayout;
-	private Toolbar toolbar;
-	private Spinner spinner;
 	ArrayList<Predictions> predictions = new ArrayList<>();
 	ArrayList<Stops> stops = new ArrayList<>();
 	ArrayList<String> stopNames = new ArrayList<>();
@@ -41,14 +39,14 @@ public class PredictionsActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.predictions);
 		stopNames.add("");
-		spinner = (Spinner) findViewById(R.id.spinner);
+		Spinner spinner = (Spinner) findViewById(R.id.spinner);
 		dataAdapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, stopNames);
 		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner.setAdapter(dataAdapter);
 		spinner.setOnItemSelectedListener(new StopListener());
 
 
-		toolbar = (Toolbar) findViewById(R.id.toolbar);
+		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayShowTitleEnabled(false);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
