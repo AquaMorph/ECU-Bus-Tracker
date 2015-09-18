@@ -28,12 +28,14 @@ public class PredictionsActivity extends AppCompatActivity {
 	private PredictionAdapter adapter;
 	private ArrayAdapter dataAdapter;
 	private SwipeRefreshLayout mSwipeRefreshLayout;
+	Menu menu;
 	ArrayList<Predictions> predictions = new ArrayList<>();
 	ArrayList<Stops> stops = new ArrayList<>();
 	ArrayList<String> stopNames = new ArrayList<>();
 	ArrayList<String> stopID = new ArrayList<>();
 	String routeID;
 	String stop = null;
+	Boolean stared = false;
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -77,7 +79,7 @@ public class PredictionsActivity extends AppCompatActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.predictions_menu, menu);
-		menu.findItem(R.id.star).setIcon(R.drawable.ic_star_24dp);
+		this.menu = menu;
 		return true;
 	}
 
@@ -93,6 +95,15 @@ public class PredictionsActivity extends AppCompatActivity {
 				break;
 			case R.id.action_settings:
 				openSettings();
+				break;
+			case R.id.star:
+				if(stared) {
+					stared = false;
+					menu.findItem(R.id.star).setIcon(R.drawable.ic_star_outline_24dp);
+				} else {
+					stared = true;
+					menu.findItem(R.id.star).setIcon(R.drawable.ic_star_24dp);
+				}
 				break;
 		}
 		return super.onOptionsItemSelected(item);
