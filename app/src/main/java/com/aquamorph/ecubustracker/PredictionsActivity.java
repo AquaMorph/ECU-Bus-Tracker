@@ -76,7 +76,7 @@ public class PredictionsActivity extends AppCompatActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.menu_main, menu);
+		getMenuInflater().inflate(R.menu.predictions_menu, menu);
 		menu.findItem(R.id.star).setIcon(R.drawable.ic_star_24dp);
 		return true;
 	}
